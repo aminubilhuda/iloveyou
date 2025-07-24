@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Love You</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        /* CSS untuk mengatur tampilan dasar halaman */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000; /* Latar belakang hitam untuk menonjolkan efek glow */
+            font-family: 'Pacifico', cursive;
+        }
+
+        /* Styling umum untuk semua partikel yang berjatuhan */
+        .particle {
+            position: absolute;
+            top: -10vh; /* Mulai dari atas layar */
+            animation: fall linear infinite; /* Animasi jatuh */
+            user-select: none; /* Agar tidak bisa diseleksi */
+        }
+        
+        /* Styling khusus untuk partikel teks dan hati */
+        .text-particle {
+            font-family: 'Pacifico', cursive; /* Menggunakan font yang sama */
+            color: #ff7e9f;
+            /* Efek glow untuk teks dan hati */
+            text-shadow:
+                0 0 5px #ff7e9f,
+                0 0 10px #ff004f,
+                0 0 15px #ff004f;
+        }
+
+        /* Styling khusus untuk partikel foto */
+        .photo-particle {
+            width: 70px; /* Lebar foto */
+            height: 70px; /* Tinggi foto */
+            /* GANTI URL INI dengan URL foto Anda */
+            background-image: url('https://placehold.co/100x100/E91E63/FFFFFF?text=Foto+Kamu');
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%; /* Membuat foto menjadi bulat */
+            box-shadow: 0 0 15px 5px rgba(255, 126, 159, 0.7); /* Efek glow untuk foto */
+        }
+
+        /* Animasi jatuh untuk partikel */
+        @keyframes fall {
+            to {
+                transform: translateY(110vh); /* Jatuh hingga ke bawah layar */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Kontainer untuk partikel yang jatuh sekarang menjadi satu-satunya konten -->
+
+    <script>
+        // JavaScript untuk membuat partikel secara dinamis
+        document.addEventListener('DOMContentLoaded', () => {
+            const particleContainer = document.body; // Partikel akan ditambahkan ke body
+
+            /**
+             * Fungsi untuk membuat satu partikel (bisa berupa teks, hati, atau foto).
+             */
+            function createParticle() {
+                // Daftar konten yang akan ditampilkan secara acak
+                // 'PHOTO' adalah penanda untuk membuat partikel foto
+                const content = ['I', 'Love', 'You', '♥', '♥', '♥', '♥', '♥', 'PHOTO'];
+                const particle = document.createElement('div');
+                const chosenContent = content[Math.floor(Math.random() * content.length)];
+
+                particle.classList.add('particle');
+
+                if (chosenContent === 'PHOTO') {
+                    // Jika kontennya adalah 'PHOTO', tambahkan kelas untuk foto
+                    particle.classList.add('photo-particle');
+                } else {
+                    // Jika bukan foto, itu adalah teks atau hati
+                    particle.classList.add('text-particle');
+                    particle.innerHTML = chosenContent;
+                     // Ukuran acak khusus untuk teks dan hati
+                    particle.style.fontSize = (Math.random() * 2) + 1 + 'rem';
+                }
+
+                // Mengatur properti acak untuk setiap partikel
+                particle.style.left = Math.random() * 100 + 'vw'; // Posisi horizontal acak
+                particle.style.animationDuration = (Math.random() * 5) + 5 + 's'; // Durasi jatuh acak (antara 5-10 detik)
+                particle.style.opacity = Math.random() * 0.7 + 0.3; // Opasitas acak (antara 0.3 - 1.0)
+                
+                // Menambahkan sedikit rotasi acak untuk variasi
+                particle.style.transform = `rotate(${Math.random() * 60 - 30}deg)`;
+
+
+                particleContainer.appendChild(particle);
+
+                // Hapus elemen partikel setelah animasinya selesai untuk menjaga performa
+                setTimeout(() => {
+                    particle.remove();
+                }, 10000); // Hapus setelah 10 detik (durasi maksimal animasi)
+            }
+
+            // Membuat partikel baru secara berkala untuk efek tak terbatas (infinity loop)
+            // Interval diubah menjadi 100ms agar lebih ramai
+            setInterval(createParticle, 100);
+        });
+    </script>
+</body>
+</html>
